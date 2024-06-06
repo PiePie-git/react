@@ -1,12 +1,16 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Layout } from 'antd';
 
-function AuthLayout() {
+const { Content } = Layout;
+
+const AuthLayout = ({ children }) => {
     return (
-        <div>
-            <Outlet />
-        </div>
+        <Layout style={{ height: '100vh' }}>
+            <Content style={{ padding: '50px', maxWidth: '400px', margin: '0 auto' }}>
+                {children}
+            </Content>
+        </Layout>
     );
-}
+};
 
 export default AuthLayout;

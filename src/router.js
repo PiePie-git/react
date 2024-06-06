@@ -11,7 +11,7 @@ const router = createBrowserRouter([
             {
                 path: 'dashboard',
                 element: <Dashboard />,
-                loader: ({ request }) => fetchDashboardData({ signal: request.signal }),
+                // loader: ({ request }) => fetchDashboardData({ signal: request.signal }),
             },
             {
                 element: <AuthLayout />,

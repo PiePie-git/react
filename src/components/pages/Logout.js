@@ -1,16 +1,15 @@
-import React from 'react';
-// import { Button } from 'element-react';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-function Logout() {
-    const handleLogout = () => {
-        console.log('Logout');
-    };
+const Logout = () => {
+    const navigate = useNavigate();
 
-    return (
-        <Button type="danger" onClick={handleLogout}>
-            Logout
-        </Button>
-    );
-}
+    useEffect(() => {
+        // Perform logout logic here
+        navigate('/login');
+    }, [navigate]);
+
+    return null;
+};
 
 export default Logout;

@@ -1,49 +1,53 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
-const isDevelopment = process.env.NODE_ENV !== 'production';
+module.exports = (env, argv) => {
+  const isDevelopment = argv.mode === 'development';
 
-module.exports = {
-  entry: './src/index.js',
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
-    publicPath: '/',
-  },
-  module: {
-    rules: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            plugins: [
-              isDevelopment && require.resolve('react-refresh/babel')
-            ].filter(Boolean),
+  return {
+    entry: './src/index.js',
+    output: {
+      filename: 'bundle.js',
+      path: path.resolve(__dirname, 'dist'),
+      publicPath: '/',
+    },
+    mode: isDevelopment ? 'development' : 'production',
+    devtool: isDevelopment ? 'eval-source-map' : 'source-map',
+    devServer: {
+      static: {
+        directory: path.join(__dirname, 'public'),
+      },
+      hot: true,
+      historyApiFallback: true,
+      compress: true,
+      port: 3000,
+    },
+    module: {
+      rules: [
+        {
+          test: /\.(js|jsx)$/,
+          exclude: /node_modules/,
+          use: {
+            loader: 'babel-loader',
           },
         },
-      },
-      {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
-      },
-    ],
-  },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: './public/index.html',
-    }),
-    isDevelopment && new ReactRefreshWebpackPlugin()
-  ].filter(Boolean),
-  devServer: {
-    static: {
-      directory: path.join(__dirname, 'public'),
+        {
+          test: /\.css$/,
+          use: ['style-loader', 'css-loader'],
+        },
+      ],
     },
-    hot: true,
-    compress: true,
-    port: 3000,
-    historyApiFallback: true,
-  },
+    plugins: [
+      new CleanWebpackPlugin(),
+      new HtmlWebpackPlugin({
+        template: './public/index.html',
+      }),
+      isDevelopment && new ReactRefreshWebpackPlugin(),
+    ].filter(Boolean),
+    resolve: {
+      extensions: ['.js', '.jsx'],
+    },
+  };
 };

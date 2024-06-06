@@ -1,26 +1,45 @@
 import React from 'react';
-// import { Form, Input, Button } from 'element-react';
+import { Form, Input, Button } from 'antd';
 
-function Login() {
-    const handleSubmit = (values) => {
-        console.log('Login:', values);
+const Login = () => {
+    const onFinish = (values) => {
+        console.log('Success:', values);
+    };
+
+    const onFinishFailed = (errorInfo) => {
+        console.log('Failed:', errorInfo);
     };
 
     return (
-        <Form onFinish={handleSubmit}>
-            <Form.Item label="Username" name="username">
+        <Form
+            name="basic"
+            initialValues={{ remember: true }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+        >
+            <Form.Item
+                label="Username"
+                name="username"
+                rules={[{ required: true, message: 'Please input your username!' }]}
+            >
                 <Input />
             </Form.Item>
-            <Form.Item label="Password" name="password">
+
+            <Form.Item
+                label="Password"
+                name="password"
+                rules={[{ required: true, message: 'Please input your password!' }]}
+            >
                 <Input.Password />
             </Form.Item>
+
             <Form.Item>
                 <Button type="primary" htmlType="submit">
-                    Login
+                    Submit
                 </Button>
             </Form.Item>
         </Form>
     );
-}
+};
 
 export default Login;

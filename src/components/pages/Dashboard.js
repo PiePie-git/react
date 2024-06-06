@@ -1,24 +1,39 @@
 import React, { useEffect, useState } from 'react';
-// import { Card } from 'element-react';
+// import { fetchDashboardData } from '../../api/fetchDashboardData';
+import { Spin, List } from 'antd';
 
-function Dashboard() {
+const Dashboard = () => {
     const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        fetch('/api/dashboard.json')
-        .then(response => response.json())
-        .then(data => setData(data));
-    }, []);
+    // useEffect(() => {
+    //     const loadData = async () => {
+    //         const result = await fetchDashboardData();
+    //         setData(result);
+    //         setLoading(false);
+    //     };
+
+    //     loadData();
+    // }, []);
+
+    if (loading) {
+        return <Spin />;
+    }
 
     return (
-        <Card title="Dashboard">
-            {data ? (
-                <pre>{JSON.stringify(data, null, 2)}</pre>
-            ) : (
-                <p>Loading...</p>
+        <List
+            itemLayout="horizontal"
+            dataSource={data}
+            renderItem={item => (
+                <List.Item>
+                    <List.Item.Meta
+                        title={<a href="https://ant.design">{item.title}</a>}
+                        description={item.description}
+                    />
+                </List.Item>
             )}
-        </Card>
+        />
     );
-}
+};
 
 export default Dashboard;
